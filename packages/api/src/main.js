@@ -1,3 +1,6 @@
+process.on("uncaughtException",function (error) {
+  console.error(error)
+})
 const express = require('express');
 const basicAuth = require('express-basic-auth');
 const bodyParser = require('body-parser');
@@ -120,9 +123,13 @@ function start() {
       });
     });
   } else {
-    const port = process.env.PORT || 3000;
-    console.log('DbGate API listening on port', port);
-    server.listen(port);
+    var port = "5000";
+    app.use(express.static(path.join(__dirname, '../../web/public')));
+    console.log(path.join(__dirname, '../../web/public'));
+    server.listen(port).on("listening",()=>{
+      console.log(JSON.stringify(server.address()))
+    });
+    console.log(`http://localhost:5000/index.html?` + new URLSearchParams({ port }) )
   }
 
   function shutdown() {

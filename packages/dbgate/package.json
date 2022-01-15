@@ -12,6 +12,7 @@
   "bin": {
     "dbgate": "./bin/dbgate.js"
   },
+  "main": "./bin/dbgate.js",
   "keywords": [
     "sql",
     "dbgate",

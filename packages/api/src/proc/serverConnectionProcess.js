@@ -103,15 +103,6 @@ async function handleMessage({ msgtype, ...other }) {
 
 function start() {
   childProcessChecker();
-
-  setInterval(() => {
-    const time = new Date().getTime();
-    if (time - lastPing > 120 * 1000) {
-      console.log('Server connection not alive, exiting');
-      process.exit(0);
-    }
-  }, 60 * 1000);
-
   process.on('message', async message => {
     if (handleProcessCommunication(message)) return;
     try {

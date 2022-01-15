@@ -53,7 +53,7 @@ async function getSshTunnel(connection) {
     const sshConn = await getSshConnection(connection);
     if (sshTunnelCache[tunnelCacheKey]) return sshTunnelCache[tunnelCacheKey];
 
-    const localPort = await portfinder.getPortPromise({ port: 10000, stopPort: 60000 });
+    const localPort = connection.localPort || await portfinder.getPortPromise({ port: 10000, stopPort: 10009 });
     // workaround for `getPortPromise` not releasing the port quickly enough
     await new Promise(resolve => setTimeout(resolve, 500));
     const tunnelConfig = {

@@ -225,10 +225,25 @@ function createWindow() {
     }
   }
 
-  const apiPackage = path.join(
-    __dirname,
-    process.env.DEVMODE ? '../../packages/api/src/index' : '../packages/api/dist/bundle.js'
-  );
+  if (process.env.ELECTRON_START_URL) {
+    loadMainWindow();
+  } else {
+    // require("../../packages/api")
+    const apiProcess = fork(path.join(__dirname, '../../packages/api/'), [
+      '--dynport',
+      '--native-modules',
+      path.join(__dirname, 'nativeModules'),
+      // '../../../src/nativeModules'
+    ]);
+    apiProcess.on('message', msg => {
+      if (msg.msgtype == 'listening') {
+        const { port, authorization } = msg;
+        global['port'] = port;
+        global['authorization'] = authorization;
+        loadMainWindow();
+      }
+    });
+  }
 
   global.API_PACKAGE = apiPackage;
   global.NATIVE_MODULES = path.join(__dirname, 'nativeModules');
