@@ -184,8 +184,9 @@ function createWindow() {
     icon: os.platform() == 'win32' ? 'icon.ico' : path.resolve(__dirname, '../icon.png'),
     webPreferences: {
       nodeIntegration: true,
-      contextIsolation: false,
       spellcheck: false,
+      enableRemoteModule: true,
+      contextIsolation: false
     },
   });
 
